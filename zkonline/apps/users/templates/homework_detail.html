@@ -1,0 +1,75 @@
+{% extends 'user_center_base.html' %}
+{% load static %}
+{% block title %}作业详情{% endblock %}
+{% block css %}
+    {{ homework_form.media }}
+{% endblock %}
+{% block content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1>作业详情</h1>
+                <a href="user_homework.html" style="float: right; margin-right:15px;"><span style="color: #00a0f0"><返回</span></a>
+            </div>
+            <div class="inforcon">
+                <div class="perinform">
+                    <ul class="homeworkcon">
+                        <li>作业标题:<span style="color: black;margin-left: 5px;">{{ homework.task.title }}</span>
+                        </li>
+                        <li>所属课程:<span style="color: black;margin-left: 5px;">{{ homework.task.course.name }}</span>
+                        </li>
+                        <li>发布日期:<span style="color: black;margin-left: 5px;">{{ homework.task.c_time }}</span>
+                        </li>
+                        <li>截止日期:<span style="color: black;margin-left: 5px;">{{ homework.task.deadline }}</span>
+                        </li>
+                        <li>分数:<span style="color: black;margin-left: 5px;">
+                         {% if homework.score == -1 %}
+                             未评分
+                         {% else %}
+                             {{ homework.score }}
+                         {% endif %}
+                        </span>
+                        </li>
+                        <li>教师评价:<span style="color: black;margin-left: 5px;">{{ homework.comment }}</span>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="form-group" style="margin-top:30px; width: 800px;">
+                    {% if msg %}
+                        <div class="alert alert-warning">{{ msg }}</div>
+                    {% endif %}
+
+                    <div style="margin-bottom: 100px;">
+                        <form class='form' action="{% url 'homework:submit' homework.task.id %}" method="post">
+                            <h3 style="margin-top: 5px;margin-bottom: 5px">作业标题：{{ homework_form.title }}</h3>
+                            {{ homework_form.content }}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-small"
+                                    style="margin-top: 10px;float:right">提交
+                            </button>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        {% if homework %}
+            document.getElementById("id_title").value = '{{ homework.title|safe }}';
+            document.getElementById("id_content").value = '{{ homework.content|safe }}';
+        {% endif %}
+    </script>
+{% endblock %}

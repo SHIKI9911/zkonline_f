@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}实验列表{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'mycss/mystyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/base.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/common-less.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/course-comment.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/learn-less.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/aui.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/common-less.css' %}">
+    {{ exp_report_form.media }}
+    <link href="{% static "mycss/homework.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="mywp" style="margin-top: 50px;min-width: 1200px;">
+            <div class="container-fluid" style="min-width: 1200px;height: 410px;">
+                <div class="row">
+                    <div class="col-md-12 col-ld-12 col-xs-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4 col-ld-4 col-xs-4 col-sm-4">
+                                <img alt="Bootstrap Image Preview" src="{{ MEDIA_URL }}{{ exp.img }}"
+                                     style="height: 300px; width: 400px;"/>
+                            </div>
+                            <div class="col-md-8 col-ld-8 col-xs-8 col-sm-8">
+                                <h1 style="margin-left: 50px">
+                                    {{ exp.title }}
+                                </h1>
+                                <p style="margin-left: 50px; margin-top: 20px;">{{ exp.detail }}</p>
+
+                                <ul class="cont" style="margin-left: 100px; margin-top: 20px;">
+                                    <li><p class="c7">学习人数：<span>{{ exp.student_nums }}人</span></p></li>
+                                    <a href="{% url "experiment:show" exp.id %}">
+                                        <button type="button" class="btn btn-lg btn-success " style="margin-top: 60px">
+                                            进入实验
+                                        </button>
+                                    </a>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-info-main clearfix w has-progress">
+
+                    <div class="info-bar clearfix">
+                        <div class="content-wrap clearfix">
+                            <div class="content">
+                                <div class="mod-tab-menu">
+                                    <ul class="course-menu clearfix">
+                                        <li><a id="commentOn"
+                                               href="{% url 'experiment:detail' exp.id %}"><span>实验详情</span></a></li>
+                                        <li><a class="active"
+                                               href="{% url 'experiment:report' exp.id %}"><span>实验报告</span></a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group" style="margin-top:10px; width: 800px;">
+                {% if msg %}
+                    <div class="alert alert-warning">{{ msg }}</div>
+                {% endif %}
+
+                <div style="margin-bottom: 100px;">
+                    <form class='form' action="{% url 'experiment:report' exp.id %}" method="post"
+                          style="width: 900px;">
+
+                        报告标题：
+                        <div style="border: grey 1px solid;margin-bottom: 10px; width: 200px;display: inline-block">{{ exp_report_form.title }}</div>
+
+                        {{ exp_report_form.content }}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-small"
+                                style="margin-top: 10px;float:right">提交实验报告
+                        </button>
+                    </form>
+                </div>
+                {% csrf_token %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %}
+    <script>
+
+        {% if report %}
+            document.getElementById("id_content").value = '{{ report.content|safe }}';
+            document.getElementById("id_title").value = '{{ report.title|safe }}';
+        {% else %}
+            document.getElementById("id_content").value = '<h1 label="标题居中" style="white-space: normal; font-size: 32px; border-bottom: 2px solid rgb(204, 204, 204); padding: 0px 4px 0px 0px; text-align: center; margin: 0px 0px 20px;">实验报告</h1><table><tbody><tr class="firstRow"><td width="273" valign="top" style="word-break: break-all;">年级：</td><td width="273" valign="top" style="word-break: break-all;">班别：</td><td width="273" valign="top" style="word-break: break-all;">姓名：</td></tr><tr><td width="273" valign="top" style="word-break: break-all;">学号：</td><td width="273" valign="top" style="word-break: break-all;"><span style="background-color: rgb(237, 245, 250);">实验时间：</span></td><td width="273" valign="top"><br/></td></tr></tbody></table><p style="white-space: normal;"><span style="font-size: 18px;"><strong>一、实验目的<br/></strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>二、实验要求</strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>三、实验过程</strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>四、实验结果</strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>五、思考题</strong></span></p><p><br/></p>';
+        {% endif %}
+
+        document.getElementsByTagName("input").style.border = "1px solid grey"
+
+    </script>
+{% endblock %}

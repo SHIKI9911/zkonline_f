@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}课程章节{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href={% static 'mycss/mystyle.css' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/common-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/learn-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/aui.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/common-less.css' %}">
+    <style>
+        .video-js .vjs-big-play-button{
+            top: 50%;
+            left: 50%;
+        }
+    </style>
+{% endblock %}
+
+{% block custom_bread %}
+<section>
+    <div class="mywp" >
+        <ul  class="crumbs" style="margin-left: 20px">
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'course:list' %}">公开课</a>></li>
+            <li><a href="{% url 'course:detail' course.id %}">课程详情</a>></li>
+            <li>课程章节</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section>
+        <div class="mywp" style="margin-top: 20px">
+
+        <!-- "Video For Everybody" http://camendesign.com/code/video_for_everybody -->
+        <video controls="controls"  width="1200" height="675" >
+            <source src="{{ video.url }}" type="video/mp4" />
+        </video>
+
+
+        <div id="main">
+            <div class="course-info-main clearfix w has-progress">
+
+                <div class="info-bar clearfix">
+                <div class="content-wrap clearfix">
+                    <div class="content">
+                        <div class="mod-tab-menu">
+                            <ul class="course-menu clearfix">
+                                <li><a class="ui-tabs-active active" id="learnOn"  href="{% url 'course:lesson' course.id %}"><span>章节</span></a></li>
+                                <li><a id="commentOn" class="" href="{% url 'course:comments' course.id %}"><span>评论</span></a></li>
+                                <li><a href="{% url 'homework:list' course.id %}"><span>作业</span></a></li>
+                            </ul>
+                        </div>
+                    {% if course.notice %}
+                        <div id="notice" class="clearfix" style="margin-bottom: 30px;">
+                            <div class="l"> <strong>课程公告:</strong> <a  href="javascript:void(0)">{{ course.notice }}</a> </div>
+                        </div>
+                    {% endif %}
+                        <div class="mod-chapters">
+                            {% for lesson in course.lesson_set.all %}
+                            <div class="chapter chapter-active" >
+                                <h3>
+                                    <strong><i class="state-expand"></i>{{ lesson.name }}</strong>
+                                </h3>
+                                <ul class="video">
+                                    {% for video in lesson.video_set.all %}
+                                    <li>
+                                        <a target="_blank" href='{% url "course:video" course.id video.id %}' class="J-media-item studyvideo">{{ video.name }} ({{ video.learn_times }})
+                                            <i class="study-state"></i>
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+                    <div class="aside r">
+                        <div class="bd">
+
+                            <div class="box mb40">
+                                <h4>资料下载</h4>
+                                <ul class="downlist">
+                                    {% for resource in course_resources %}
+                                    <li>
+                                        <span ><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;{{ resource.name }}</span>
+                                        <a href="{{ resource.file.url }}" class="downcode" target="_blank" download="" data-id="274" title="">下载</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                </div>
+        </div>
+    </div>
+
+
+
+</section>
+
+
+{% endblock %}

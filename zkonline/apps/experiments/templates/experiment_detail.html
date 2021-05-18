@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}实验详情{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'mycss/mystyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/base.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/common-less.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/course-comment.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/learn-less.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/aui.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/common-less.css' %}">
+{% endblock %}
+
+{% block custom_bread %}
+    <section>
+        <div class="mywp">
+            <ul class="crumbs" style="margin-left: 20px">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'experiment:list' %}">实验</a>></li>
+                <li>实验详情</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section>
+
+        <div class="mywp">
+            <div class="container-fluid" style="margin-bottom: 500px">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img alt="Bootstrap Image Preview" src="{{ MEDIA_URL }}{{ exp.img }}"
+                                     style="height: 300px; width: 400px;"/>
+                            </div>
+                            <div class="col-md-8">
+                                <h1 style="margin-left: 50px">
+                                    {{ exp.title }}
+                                </h1>
+                                <p style="margin-left: 50px; margin-top: 20px;">{{ exp.detail }}</p>
+
+                                <ul class="cont" style="margin-left: 100px; margin-top: 20px;">
+                                    <li><p class="c7">学习人数：<span>{{ exp.student_nums }}人</span></p></li>
+                                    <a href="{% url "experiment:show" exp.id %}">
+                                        <button type="button" class="btn btn-lg btn-success " style="margin-top: 60px">
+                                            进入实验
+                                        </button>
+                                    </a>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-info-main clearfix w has-progress">
+
+                    <div class="info-bar clearfix">
+                        <div class="content-wrap clearfix">
+                            <div class="content">
+                                <div class="mod-tab-menu">
+                                    <ul class="course-menu clearfix">
+                                        <li><a id="commentOn" class="active"
+                                               href="{% url 'experiment:detail' exp.id %}"><span>实验详情</span></a></li>
+                                        <li><a href="{% url 'experiment:report' exp.id %}"><span>实验报告</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!--发布评论-->
+                            <div id="js-pub-container" class="issques clearfix js-form" style="margin-top: 50px;">
+                                <div class="wgt-ipt-wrap pub-editor-wrap " id="js-pl-input-fake">
+                                    <textarea id="js-pl-textarea" class="" placeholder="请输入你的评论"></textarea>
+                                </div>
+                                <input type="button" id="js-pl-submit" class="pub-btn" data-cid="452" value="发表评论">
+                                <p class="global-errortip js-global-error"></p>
+                            </div>
+
+                            <div id="course_note">
+                                <ul class="mod-post" id="comment-list">
+                                    {% for comment in comments %}
+                                        <li class="post-row">
+                                            <div class="media">
+                                                <span target="_blank"><img
+                                                        src='{{ MEDIA_URL }}{{ comment.user.profile_img }}' width='40'
+                                                        height='40'/></span>
+                                            </div>
+                                            <div class="bd">
+                                                <div class="tit">
+                                                    <span target="_blank" style="color: blue">
+                                                        {% if comment.user.real_name %}
+                                                            {{ comment.user.real_name }}
+                                                        {% else %}
+                                                            {{ comment.user.username }}
+                                                        {% endif %}</span>
+                                                </div>
+                                                <p style="color: black">{{ comment.content }}</p>
+                                                <div class="footer clearfix">
+                                                    <span title="创建时间" class="l timeago">时间：{{ comment.c_time }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="clear"></div>
+
+                </div>
+            </div>
+
+
+    </section>
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        //添加评论
+        $(document).ready(function () {
+            $('#js-pl-submit').on('click', function () {
+                var comments = $("#js-pl-textarea").val()
+                if (comments == "") {
+                    alert("评论不能为空")
+                    return
+                }
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "{% url 'op:exp_comment' %}",
+                    data: {'exp': {{ exp.id }}, 'content': comments},
+                    async: true,
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                    },
+                    success: function (data) {
+                        if (data.status == 'fail') {
+                            alert(data.msg)
+                        } else if (data.status == 'success') {
+                            window.location.reload();//刷新当前页面.
+                        }
+                    },
+                });
+            });
+        });
+
+    </script>
+{% endblock %}
+

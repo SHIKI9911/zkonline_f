@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}教师详情{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href={% static 'mycss/mystyle.css' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/common-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/learn-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/aui.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/common-less.css' %}">
+{% endblock %}
+
+{% block custom_bread %}
+<section>
+    <div class="mywp" >
+        <ul  class="crumbs" style="margin-left: 20px">
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'teacher:list' %}">教师列表</a>></li>
+            <li>教师详情</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="mywp" style="margin-top: 20px">
+        <div class="container-fluid" style="border: 1px solid #eaeaea; position: relative; width: 901px; ">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4" style="margin-top: 20px;margin-bottom: 20px">
+                            <img alt="Bootstrap Image Preview" src="{{ MEDIA_URL }}{{ teacher.profile_img }}" style="height: 300px; width: 300px;" />
+                        </div>
+                    <div class="col-md-8" style="margin-top: 20px" >
+                        <h1 style="margin-left: 10px">
+                            {{ teacher.name }}
+                        </h1>
+                        <p style="margin-left: 10px; margin-top: 20px;">{{ teacher.detail }}</p>
+
+                        <ul class="cont" style="margin-left: 50px; margin-top: 20px;">
+                        <li ><p><span>{{ teacher.name }}</span></p>
+                        <li ><p>性别：<span>{% if teacher.gender == 'male' %} 男 {% else %} 女 {% endif %}</span> </p> <p class="c7"></p></li>
+                        <li ><p>课程数：<span>{{ teacher.course_nums }}</span></p></li>
+                        <li ><p>邮箱：<span>{{ teacher.email}}  </span> </p>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mywp" style="margin-top: 20px">
+        <div class="container-fluid" style="border: 1px solid #eaeaea; position: relative; width: 901px; ">
+            <div class="row">
+            <ul class="tab_header" >
+                <li class="active">全部课程</li>
+            </ul>
+            </div>
+        </div>
+        </div>
+
+
+        {% for course in teacher.course_set.all %}
+        <div class="container-fluid"  style="border: 1px solid #eaeaea; position: relative; height: 170px; width: 901px; ">
+
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img alt="Bootstrap Image Preview"  style="margin-top: 10px; width: 150px; height: 150px;" src="{{ MEDIA_URL }}{{ course.course_img }}" class="img-circle" />
+                        </div>
+                        <div class="col-md-8">
+                        <ul class="cont" style="margin-left: 50px">
+                        <li class="first" style="font-size: 50px; margin-top: 25px;"><h1><span>{{ course.name }}</span></h1>
+                        <li class="first" style="margin-top: 5px"><p>时长：<span>{{ course.learn_times }}分钟</span> </p> <p class="c7">学习人数：<span>{{ course.student_nums }}人</span></p></li>
+                        <li class="first"><p>类型：<span>{{ course.category }}  </span> </p>  <p class="c7" >章节数：<span>{{ course.lesson_nums }}章</span></p></li>
+                        </ul>
+                        </div>
+                        <div class=""col-md-2>
+                            <a href="{% url 'course:detail' course.id %}"> <button type="button" class="btn btn-lg btn-success " style="margin-top: 60px">查看详情</button> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+{% endblock %}

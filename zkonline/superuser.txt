@@ -1,0 +1,20 @@
+username == 'root'
+password == '654321'
+
+修改superuser密码
+方法一：
+1、打开命令行，进入到项目目录下
+2、写入以下命令
+python manage.py shell
+
+from django.contrib.auth.models import User
+
+user =User.objects.get(username='root')
+
+user.set_password('new_password')  // 在此处写入新密码
+
+user.save()
+
+方法二：
+1、打开命令行，进入项目目录下，输入以下命令
+python manage.py createsuperuser

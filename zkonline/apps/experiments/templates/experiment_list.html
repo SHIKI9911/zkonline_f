@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}实验列表{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href={% static 'mycss/mystyle.css' %}
+{% endblock %}
+
+{% block custom_bread %}
+    <section>
+    <div class="mywp">
+        <ul class="crumbs">
+            <li style="list-style-type:none;"><a href="{% url 'index' %}">首页</a>></li>
+            <li style="list-style-type:none;">实验列表</li>
+        </ul>
+    </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="mywp butler_list_box list">
+            <div class='left'>
+                <div class="all">共<span class="key">{{ exp_num }}</span>个实验</div>
+                <div class="butler_list company list">
+                    <div class="layout">
+                        {% for exp in all_exp.object_list %}
+                            <div class="container-fluid"
+                                 style="border: 1px solid #eaeaea; margin: 10px 10px 10px 10px; height: 170px; width: 901px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img alt="Bootstrap Image Preview"
+                                                     style="margin-top: 10px; width: 150px; height: 150px;"
+                                                     src="{{ MEDIA_URL }}{{ exp.img }}" class="img-circle"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <ul class="cont" style="margin-left: 50px">
+                                                    <li class="first" style="font-size: 25px; margin-top: 40px;margin-bottom: 20px;"><p>
+                                                        <span>{{ exp.title }}</span></p>
+                                                    <li class="first">
+                                                        <p>授课教师：<span>{{ exp.teacher }}</span></p>
+                                                        <p class="c7">学习人数：<span>{{ exp.student_nums }}人</span></p>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="" col-md-2>
+                                                <a href="{% url 'experiment:detail' exp.id %}">
+                                                    <button type="button" class="btn btn-lg btn-success "
+                                                            style="margin-top: 60px">查看详情
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+
+                    <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if all_courses.has_previous %}
+                                <li class="long" style="list-style-type: none"><a
+                                        href="?{{ all_courses.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in all_courses.pages %}
+                                {% if page %}
+                                    {% ifequal page all_courses.number %}
+                                        <li class="active" style="list-style-type: none"><a
+                                                href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li style="list-style-type: none"><a href="?{{ page.querystring }}"
+                                                                             class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none" style="list-style-type: none">...</li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_courses.has_next %}
+                                <li class="long" style="list-style-type: none"><a
+                                        href="?{{ all_courses.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+    </section>
+
+{% endblock %}

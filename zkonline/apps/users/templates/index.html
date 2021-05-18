@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}首页{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href={% static 'mycss/mystyle.css' %}
+{% endblock %}
+{% block content %}
+
+    <div id="myCarousel" class="carousel slide">
+    <!-- 轮播（Carousel）指标 -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <!-- 轮播（Carousel）项目 -->
+    <div class="carousel-inner" style="text-align: center; height: 500px;">
+        {% for banner in banners %}
+            {% if banner.index == 1 %}
+                <div class="item active">
+                    {% if banner.is_course %}
+                        <a href="{% url 'course:detail' banner.course.id %}"><img src="{{ banner.image.url }}" alt="First slide" style="height: 500px;width: 1200px;display: inline-block"></a>
+                    {% else %}
+                        <a href="{{ banner.url }}"><img src="{{ banner.image.url }}" alt="First slide" style="height: 500px;width: 1200px;display: inline-block"></a>
+                    {% endif %}
+                    <div class="carousel-caption">{{ banner.title }}</div>
+                </div>
+            {% else %}
+                <div class="item">
+                    {% if banner.is_course %}
+                        <a href="{% url 'course:detail' banner.course.id %}"><img src="{{ banner.image.url }}" alt="First slide" style="height: 500px;width: 1200px;display: inline-block"></a>
+                    {% else %}
+                        <a href="{{ banner.url }}"><img src="{{ banner.image.url }}" alt="First slide" style="height: 500px;width: 1200px;display: inline-block"></a>
+                    {% endif %}
+                    <div class="carousel-caption">{{ banner.title }}</div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <!-- 轮播（Carousel）导航 -->
+    <a class="carousel-control left" href="#myCarousel"
+       data-slide="prev"> <span _ngcontent-c3="" aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span></a>
+    <a class="carousel-control right" href="#myCarousel"
+       data-slide="next"> <span _ngcontent-c3="" aria-hidden="true"
+                                class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+
+    <div class="mywp" style="width: 1200px;">
+        <h1><span>仲恺农业工程学院</span></h1>
+        <p>仲恺农业工程学院（Zhongkai University of Agriculture and
+            Engineering）简称仲恺，创办于1927年，是一所以伟大的爱国主义者、近代民主革命家廖仲恺先生名字命名，以现代农业科学为特色，农学、工学为优势，农、工、理、经、管、文、艺、法八大学科协调发展的广东省省属高水平应用型大学，是教育部本科教学评估优秀学校及全国首批卓越农林人才教育培养计划高校。学校办学历史悠久，文脉深厚，坐落在历史文化名城广州。现有海珠校区、白云校区、番禺教学科研基地，占地面积2000余亩。校园集云山之神秀，汇珠水之灵气，是读书治学的理想地。</p>
+        <p>
+            截止到2020年6月，学校拥有17个二级学院、1个教学部和华南地区最大的雅思考点、33个省部级科研平台。拥有一级学科学术型硕士学位授权点9个、二级学科硕士学位授权点35个、农业硕士、工程硕士、风景园林硕士、兽医硕士和艺术硕士5个类别专业硕士学位授权点，58个本科专业。学校有专任教师1000余人，其中具有博士学位的教师比例约55%，全日制在校本科生、研究生2万余人，同时招有成人学历教育学生及非全日制研究生。</p>
+    </div>
+
+    <style type="text/css">
+        .carousel-caption {
+            margin-right: -200px;
+            position: relative;
+            bottom: 50px;
+            font-size: 20px;
+        }
+
+        .carousel-inner {
+            height: 578px;
+        }
+    </style>
+{% endblock %}

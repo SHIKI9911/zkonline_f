@@ -1,0 +1,108 @@
+
+footer .footer {
+    background: #3a3a3a;
+    height: 300px;
+    padding: 15px;
+    color: #717171;
+    margin-bottom: 0;
+}
+
+footer .footer .nav {
+    width: 500px;
+    height: 30px;
+    margin: 0 auto;
+    font-size: 16px;
+}
+
+footer .footer .nav li {
+    float: left;
+    border-right: 1px solid #fff;
+}
+
+footer .footer .nav li:last-child {
+    border: 0;
+}
+
+footer .footer .nav a {
+    color: #fff;
+    padding: 30px;
+}
+
+footer .footer .nav a:hover {
+    text-decoration: underline;
+}
+
+footer .footer .cont {
+    height: 140px;
+    padding: 20px;
+    margin-top: 10px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 20px;
+    color: #fff;
+}
+
+footer .footer .cont li {
+    width: 33.3%;
+    float: left;
+}
+
+footer .footer .cont .code {
+    text-align: center;
+}
+
+footer .footer .cont .third {
+    text-align: left;
+    float: right;
+    width: 250px;
+    margin-top: 35px;
+}
+
+footer .footer .cont .third img {
+    margin-right: 10px;
+}
+
+footer .footer .tell {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+footer .footer .links {
+    height: auto;
+    overflow: hidden;
+}
+
+footer .footer .links span {
+    float: left;
+    font-weight: bold;
+    color: #717171;
+    margin: 5px;
+}
+
+footer .footer .links li {
+    float: left;
+    margin: 5px;
+}
+
+footer .footer .links a {
+    color: #717171;
+}
+
+footer .footer .links a:hover {
+    text-decoration: underline;
+}
+
+footer .footer .line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid #343434;
+    clear: both;
+    margin: 20px 0;
+}
+
+.listtop {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}

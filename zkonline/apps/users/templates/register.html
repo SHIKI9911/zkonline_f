@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}注册{% endblock %}
+{% block content %}
+    <div class="container" style="margin-bottom: 150px">
+        <div class="col-md-4 col-md-offset-4">
+          <form class='form-register' action="/register/" method="post">
+
+              {% if message %}
+                  <div class="alert alert-warning">{{ msg }}</div>
+              {% endif %}
+
+              {% csrf_token %}
+
+              <h2 class="text-center">欢迎注册</h2>
+              {% if msg %}
+                  <div class="alert alert-warning">{{ msg }}</div>
+              {% endif %}
+              <div class="form-group">
+                  {{ register_form.username.label_tag }}
+                  {{ register_form.username}}
+              </div>
+              <div class="form-group">
+                  {{ register_form.password1.label_tag }}
+                  {{ register_form.password1 }}
+              </div>
+              <div class="form-group">
+                  {{ register_form.password2.label_tag }}
+                  {{ register_form.password2 }}
+              </div>
+              <div class="form-group">
+                  {{ register_form.email.label_tag }}
+                  {{ register_form.email }}
+              </div>
+              <div class="form-group">
+                  {{ register_form.sex.label_tag }}
+                  {{ register_form.sex }}
+              </div>
+              <div class="form-group">
+                  {{ register_form.mobile_number.label_tag }}
+                  {{ register_form.mobile_number }}
+              </div>
+              <div class="form-group">
+                  {{ register_form.captcha.label_tag }}
+                  {{ register_form.captcha }}
+              </div>
+
+              <button type="reset" class="btn btn-primary pull-left">重置</button>
+              <button type="submit" class="btn btn-primary pull-right">提交</button>
+
+          </form>
+        </div>
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block js %}
+{#    captcha本质上是一个<img>，里面有src和alt等参数，因此使用.attr()修改即可#}
+<script>
+        $('.captcha').click(function () {
+            $.getJSON('/captcha/refresh/',function (result) {
+                $('.captcha').attr('src',result['image_url']);
+                $('#id_captcha_0').val(result['key']);
+            });
+        });
+</script>
+{% endblock %}

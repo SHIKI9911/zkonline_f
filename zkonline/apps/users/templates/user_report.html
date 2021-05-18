@@ -1,0 +1,83 @@
+{% extends 'user_center_base.html' %}
+{% block title %}作业与实验{% endblock %}
+
+{% block css%}
+    {{ report_form.media }}
+{% endblock %}
+
+{% block content %}
+    <div class="right">
+        <div class="personal_des Releasecont">
+            <div class="head">
+                <h1>实验报告</h1>
+            </div>
+
+        </div>
+        <div class="personal_des permessage">
+
+            <div class="messagelist">
+                <table class="table table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <th>实验</th>
+                        <th>报告标题</th>
+                        <th>创建日期</th>
+                        <th>分数</th>
+                        <th>查看</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for report in report_list.object_list %}
+                        <tr>
+                        <td align="center">
+                            {{ report.exp }}
+                        </td>
+                        <td>
+                            {{ report.title }}
+                        </td>
+                        <td align="center">
+                            {{ report.c_time | date:"Y-m-d" }}
+                        </td>
+                        <td align="center">
+                            {% if report.score == -1 %}
+                                未评分
+                            {% else %}
+                                {{ report.score }}
+                            {% endif %}
+                        </td>
+                        <td align="center">
+                            <a href="{% url 'users:report_detail' report.id %}"><span
+                                    class="glyphicon glyphicon-eye-open"></span></a>
+                        </td>
+                    {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="pageturn pagerright">
+                <ul class="pagelist">
+                    {% if messages.has_previous %}
+                        <li class="long"><a href="?{{ messages.previous_page_number.querystring }}">上一页</a></li>
+                    {% endif %}
+
+                    {% for page in messages.pages %}
+                        {% if page %}
+                            {% ifequal page messages.number %}
+                                <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                            {% else %}
+                                <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li class="none">...</li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if messages.has_next %}
+                        <li class="long"><a href="?{{ messages.next_page_number.querystring }}">下一页</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

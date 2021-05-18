@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}课程详情{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'mycss/mystyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/common-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/learn-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/aui.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zk/course/common-less.css' %}">      
+{% endblock %}
+
+{% block custom_bread %}
+<section>
+    <div class="mywp" >
+        <ul  class="crumbs" style="margin-left: 20px">
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'course:list' %}">公开课</a>></li>
+            <li>课程详情</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section>
+
+    <div class="mywp">
+        <div class="container-fluid" style="margin-bottom: 100px">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img alt="Bootstrap Image Preview" src="{{ MEDIA_URL }}{{ course.course_img }}" style="height: 400px; width: 400px;" />
+                        </div>
+                    <div class="col-md-8" >
+                        <h1 style="margin-left: 50px">
+                            {{ course.name }}
+                        </h1>
+                        <p style="margin-left: 50px; margin-top: 20px;">{{ course.detail }}</p>
+
+                        <ul class="cont" style="margin-left: 100px; margin-top: 20px;">
+                            <li ><p>时长：<span>{{ course.learn_times }}分钟</span> </p></li>
+                            <li><p class="c7">学习人数：<span>{{ course.student_nums }}人</span></p></li>
+                            <li ><p>类型：<span>{{ course.category }}  </span> </p></li>
+                            <li><p class="c7" >章节数：<span>{{ course.lesson_nums }}章</span></p></li>
+                            <a href="{% url 'course:lesson' course.id %}"> <button type="button" class="btn btn-lg btn-success " style="margin-top: 60px">开始学习</button> </a>
+
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+

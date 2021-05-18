@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}教师列表{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href={% static 'mycss/mystyle.css' %}
+{% endblock %}
+
+{% block custom_bread %}
+    <section>
+    <div class="mywp">
+        <ul class="crumbs">
+            <li style="list-style-type:none;"><a href="{% url 'index' %}">首页</a>></li>
+            <li style="list-style-type:none;">教师列表</li>
+        </ul>
+    </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="mywp butler_list_box list" >
+            <div class='left' style="width: 1050px">
+                <div class="all">共<span class="key">{{ teacher_nums }}</span>个教师</div>
+                <div class="butler_list company list" style="width: 1100px">
+                    <div class="layout" style="width: 1100px">
+                        {% for teacher in teachers.object_list %}
+                            <div class="container-fluid"
+                                 style="border: 1px solid #eaeaea; margin: 10px 10px 10px 10px; height: 170px; width:1000px;">
+                                <div class="row" style="width: 1000px;">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img alt="Bootstrap Image Preview"
+                                                     style="margin-top: 10px; width: 150px; height: 150px;"
+                                                     src="{{ MEDIA_URL }}{{ teacher.profile_img }}" class="img-circle"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <ul class="cont" style="margin-left:0px;width: 800px;">
+                                                    <li class="first" style="font-size: 25px; margin-top: 20px;margin-bottom: 15px;"><p>
+                                                        <span>{{ teacher.name }}</span></p>
+                                                    <li class="first"><p>性别：<span>{% if teacher.gender == 'male' %}
+                                                        男 {% else %} 女 {% endif %}</span></p>
+                                                        <p class="c7">课程数：<span>{{ teacher.course_nums }}</span></p>
+                                                    </li>
+                                                    <li class="first"><p>邮箱：<span>{{ teacher.email }}  </span></p>
+                                                    <li class="first"><p>简介：{{ teacher.desc }}</p></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-2" >
+                                                <a href="{% url 'teacher:detail' teacher.id %}">
+                                                    <button type="button" class="btn btn-lg btn-success "
+                                                            style="margin-top: 60px">查看详情
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+
+                    <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if teachers.has_previous %}
+                                <li class="long" style="list-style-type: none"><a
+                                        href="?{{ teachers.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in teachers.pages %}
+                                {% if page %}
+                                    {% ifequal page teachers.number %}
+                                        <li class="active" style="list-style-type: none"><a
+                                                href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li style="list-style-type: none"><a href="?{{ page.querystring }}"
+                                                                             class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none" style="list-style-type: none">...</li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if teachers.has_next %}
+                                <li class="long" style="list-style-type: none"><a
+                                        href="?{{ teachers.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+    </section>
+
+{% endblock %}

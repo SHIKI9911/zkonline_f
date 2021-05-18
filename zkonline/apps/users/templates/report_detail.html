@@ -1,0 +1,79 @@
+{% extends 'user_center_base.html' %}
+{% load static %}
+{% block title %}实验报告{% endblock %}
+{% block css %}
+    {{ report_form.media }}
+{% endblock %}
+{% block content %}
+    <div class="right">
+        <div class="personal_des ">
+            <div class="head" style="border:1px solid #eaeaea;">
+                <h1>实验报告</h1>
+            </div>
+            <div class="inforcon">
+                <div class="perinform">
+                    <ul class="homeworkcon">
+                        <li>实验:<span style="color: black;margin-left: 5px;">{{ report.exp }}</span>
+                        </li>
+                        <li>报告标题:<span style="color: black;margin-left: 5px;">{{ report.title }}</span>
+                        </li>
+                        <li>创建日期:<span style="color: black;margin-left: 5px;">{{ report.c_time }}</span>
+                        </li>
+                        <li>分数:<span style="color: black;margin-left: 5px;">
+                            {% if report.score == -1 %}
+                                未评分
+                            {% else %}
+                                {{ report.score }}
+                            {% endif %}</span>
+                        </li>
+                        <li>教师评价:<span style="color: black;margin-left: 5px;">{{ report.comment }}</span>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="form-group" style="margin-top:10px; width: 800px;">
+                    {% if msg %}
+                        <div class="alert alert-warning">{{ msg }}</div>
+                    {% endif %}
+
+                    <div style="margin-bottom: 100px;">
+                        <form class='form' action="{% url 'users:report_detail' report.id %}" method="post"
+                              style="width: 900px;">
+
+                            <h3 style="margin-top: 5px;margin-bottom: 5px;">报告标题：{{ report_form.title }}</h3>
+                            {{ report_form.content }}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-small"
+                                    style="margin-top: 10px;float:right">提交实验报告
+                            </button>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                    {% csrf_token %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+
+        {% if report %}
+            document.getElementById("id_title").value = '{{ report.title|safe }}';
+            document.getElementById("id_content").value = '{{ report.content|safe }}';
+        {% else %}
+            document.getElementById("id_content").value = '<h1 label="标题居中" style="white-space: normal; font-size: 32px; border-bottom: 2px solid rgb(204, 204, 204); padding: 0px 4px 0px 0px; text-align: center; margin: 0px 0px 20px;">实验报告</h1><table><tbody><tr class="firstRow"><td width="273" valign="top" style="word-break: break-all;">年级：</td><td width="273" valign="top" style="word-break: break-all;">班别：</td><td width="273" valign="top" style="word-break: break-all;">姓名：</td></tr><tr><td width="273" valign="top" style="word-break: break-all;">学号：</td><td width="273" valign="top" style="word-break: break-all;"><span style="background-color: rgb(237, 245, 250);">实验时间：</span></td><td width="273" valign="top"><br/></td></tr></tbody></table><p style="white-space: normal;"><span style="font-size: 18px;"><strong>一、实验目的<br/></strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>二、实验要求</strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>三、实验过程</strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>四、实验结果</strong></span></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><br/></p><p style="white-space: normal;"><span style="font-size: 18px;"><strong>五、思考题</strong></span></p><p><br/></p>';
+        {% endif %}
+
+        document.getElementsByTagName("input").style.border = "1px solid grey"
+
+    </script>
+
+{% endblock %}
